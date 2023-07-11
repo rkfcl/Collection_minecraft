@@ -24,8 +24,6 @@ import java.util.*;
 
 public final class Collector extends JavaPlugin implements Listener {
     private File dataFolder;
-
-
     @Override
     public void onEnable() {
         getLogger().info("FishCollection 플러그인이 활성화되었습니다.");
@@ -37,7 +35,6 @@ public final class Collector extends JavaPlugin implements Listener {
             dataFolder.mkdirs();
         }
     }
-
     @Override
     public void onDisable() {
         getLogger().info("FishCollection 플러그인이 비활성화되었습니다.");

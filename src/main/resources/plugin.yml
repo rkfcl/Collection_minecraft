@@ -1,0 +1,7 @@
+name: Collector
+version: '${project.version}'
+main: collection.collector.Collector
+api-version: 1.19
+commands:
+  물고기도감:
+    description: 물고기 도감

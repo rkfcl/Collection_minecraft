@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -48,36 +47,28 @@ public final class Collector extends JavaPlugin implements Listener {
     public void onEntityPickupItem(EntityPickupItemEvent event) {
         Entity entity = event.getEntity();
         ItemStack itemStack = event.getItem().getItemStack();
-
         if (entity instanceof Player) {
             Player player = (Player) entity;
             if (itemStack.getType() == Material.ROTTEN_FLESH && itemStack.hasItemMeta()) {
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 if (itemMeta.hasCustomModelData()) {
                     int customModelData = itemMeta.getCustomModelData();
-
                     // 플레이어의 UUID로 파일명 생성
                     String fileName = player.getUniqueId().toString() + ".yml";
                     File playerFile = new File(dataFolder, fileName);
-
                     try {
                         FileConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
-
                         // 플레이어 이름과 UUID 저장
                         playerData.set("플레이어이름", player.getName());
                         playerData.set("플레이어UUID", player.getUniqueId().toString());
-
                         // 잡은 물고기 정보를 Set으로 관리하여 중복 체크
                         Set<String> fishSet = new HashSet<>(playerData.getStringList("잡은물고기"));
                         String fishData = itemStack.getType().name() + ":" + customModelData;
-
                         if (!fishSet.contains(fishData)) {
                             fishSet.add(fishData);
                             playerData.set("잡은물고기", new ArrayList<>(fishSet));
-
                             // 잡은 물고기 개수 확인
                             int caughtFishCount = fishSet.size();
-
                             // 보상을 받았는지 여부 확인
                             boolean hasReceived9Reward = playerData.getBoolean("9보상");
                             boolean hasReceived18Reward = playerData.getBoolean("18보상");
@@ -107,7 +98,6 @@ public final class Collector extends JavaPlugin implements Listener {
                                 playerData.save(playerFile);
                             }
                         }
-
                         playerData.save(playerFile);
                     } catch (IOException e) {
                         e.printStackTrace();

@@ -5,3 +5,5 @@ api-version: 1.19
 commands:
   물고기도감:
     description: 물고기 도감
+  요리도감:
+    description: 요리 도감

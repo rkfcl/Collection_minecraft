@@ -50,6 +50,30 @@ public class CollectorCommand implements CommandExecutor, Listener {
             "collection_tambaqui",
             "collection_tuna"
     );
+    public static List<String> foodNames = Arrays.asList(
+            "collection_ptato_salad:감자 샐러드",
+            "collection_vegetable_salad:야채 샐러드",
+            "collection_fried_egg:계란 후라이",
+            "collection_omelet:오믈렛",
+            "collection_baked_fish:생선구이",
+            "collection_perch_carp:도미,잉어",
+            "collection_vegetable_medley:야채의 메들리",
+            "collection_rice_spaghetti:스파게티",
+            "collection_carp_surprise:깜짝 잉어",
+            "collection_pancakes:팬케이크",
+            "collection_trout_soup:송어 스프",
+            "collection_tortilla:또띠아",
+            "collection_fish_taco:생선 타코",
+            "collection_salt:소금",
+            "collection_fried_eel:장어튀김",
+            "collection_maki_roll:마키 롤",
+            "collection_rice_pudding:라이스 푸딩",
+            "collection_ice_cream:아이스크림",
+            "collection_pumpkin_soup:호박 죽",
+            "collection_glazed_yams:고구마 맛탕",
+            "collection_salmon_dinner:연어 정찬",
+            "collection_crispy_bass:우럭 튀김"
+    );
     private JavaPlugin plugin;
     public CollectorCommand(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -61,6 +85,12 @@ public class CollectorCommand implements CommandExecutor, Listener {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 createFishCollectionInventory(player);
+                return true;
+            }
+        }else if (command.getName().equalsIgnoreCase("요리도감")) {
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+                createFoodCollectionInventory(player);
                 return true;
             }
         }
@@ -90,6 +120,34 @@ public class CollectorCommand implements CommandExecutor, Listener {
         }
         player.openInventory(inventory);
     }
+    public void createFoodCollectionInventory(Player player) {
+        Inventory inventory = Bukkit.createInventory(null, 27, "요리 도감");
+        File playerFile = new File(plugin.getDataFolder(), "data" + File.separator + player.getUniqueId() + ".yml");
+        FileConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
+        List<String> foodList = playerData.getStringList("요리");
+
+        for (int i = 0; i < foodNames.size(); i++) {
+            String foodName = foodNames.get(i);
+            String[] parts = foodName.split(":");
+            String itemName = parts[0];
+            String itemNameWithoutCollection = parts[0].substring("collection_".length());
+
+            // fooddata 리스트에 해당 요리가 있는지 체크
+            boolean containsFood = foodList.contains(itemNameWithoutCollection);
+
+            // fooddata 리스트에 해당 요리가 있으면 해당 아이템 설정, 없으면 기본 아이템 설정
+            if (containsFood) {
+                setItem(inventory, i, collectoritem(itemNameWithoutCollection));
+            } else {
+                setItem(inventory, i, collectoritem(itemName));
+            }
+        }
+
+        player.openInventory(inventory);
+    }
+
+
+
     public static ItemStack collectoritem(String itemId) {
         // itemsadder에서 생성한 아이템을 가져오는 코드
         ItemStack fishItem = ItemsAdder.getCustomItem(itemId);

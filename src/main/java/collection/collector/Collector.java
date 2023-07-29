@@ -98,6 +98,7 @@ public final class Collector extends JavaPlugin implements Listener {
                                 sendTitle(player, "도감 보상 지급!", "§a[ 물고기도감 ] §f모든 도감 획득 §a완료!", 10, 70, 10);
                                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "iagive " + player.getName() + " protectblock:rkfcl_coin " + 27);
                                 // 보상 지급 후 상태 업데이트
+                                Bukkit.getServer().broadcastMessage("§l§e[!] §a모두 축하해 주세요! " + player.getName() + "님이 모든 §5물고기 도감§a을 채웠습니다!");
                                 playerData.set("27보상", true);
                             }
                             playerData.save(playerFile);

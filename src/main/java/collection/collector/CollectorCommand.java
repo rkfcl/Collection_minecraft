@@ -109,9 +109,7 @@ public class CollectorCommand implements CommandExecutor, Listener {
                 String[] fishInfo = fishData.split(":");
                 String fishKey = fishInfo[0];
                 int customModelData = Integer.parseInt(fishInfo[1]);
-                if (customModelData==70){
-                    setItem(inventory, 6, collectoritem(collectionItem(fishKey, customModelData)));
-                }else if (customModelData==270){
+                if (customModelData==270){
                     setItem(inventory, 26, collectoritem(collectionItem(fishKey, customModelData)));
                 }else {
                     setItem(inventory, customModelData - 1, collectoritem(collectionItem(fishKey, customModelData)));
@@ -174,7 +172,7 @@ public class CollectorCommand implements CommandExecutor, Listener {
                 return "blackfish";
             } else if (customModelData == 6) {
                 return "bluegill";
-            } else if (customModelData == 70) {
+            } else if (customModelData == 7) {
                 return "tilapia";
             } else if (customModelData == 8) {
                 return "brown_trout";
